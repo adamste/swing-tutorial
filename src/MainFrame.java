@@ -18,6 +18,8 @@ public class MainFrame extends JFrame {
         btn=new JButton("Click me!");
         textPanel=new TextPanel();
 
+        toolbar.setTextPanel(textPanel);
+
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
