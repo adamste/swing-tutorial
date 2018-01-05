@@ -7,19 +7,18 @@ import java.awt.event.KeyEvent;
 public class MainFrame extends JFrame {
 
     private TextPanel textPanel;
-    private JButton btn;
     private static FormPanel formPanel;
     private Toolbar toolbar;
     private JFileChooser fileChooser;
 
-    public MainFrame(){
+    public MainFrame() {
         super("Hello World");
 
         setLayout(new BorderLayout());
         toolbar = new Toolbar();
         textPanel = new TextPanel();
         formPanel = new FormPanel();
-        fileChooser=new JFileChooser();
+        fileChooser = new JFileChooser();
 
         setJMenuBar(createMenuBar());
 
@@ -42,20 +41,12 @@ public class MainFrame extends JFrame {
             }
         });
 
-//        btn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                textPanel.appendText("hello\n");
-//            }
-//        });
+        add(formPanel, BorderLayout.WEST);
+        add(toolbar, BorderLayout.NORTH);
+        add(textPanel, BorderLayout.CENTER);
 
-        add(formPanel,BorderLayout.WEST);
-        add(toolbar,BorderLayout.NORTH);
-        add(textPanel,BorderLayout.CENTER);
-//        add(btn, BorderLayout.SOUTH);
-
-
-        setSize(600,500);
+        setMinimumSize(new Dimension(500,500));
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -63,6 +54,8 @@ public class MainFrame extends JFrame {
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenu windowMenu = new JMenu("Window");
+        JMenu showMenu = new JMenu("Show");
 
         JMenuItem exportData = new JMenuItem("Export data...");
         JMenuItem importData = new JMenuItem("Import data...");
@@ -73,10 +66,7 @@ public class MainFrame extends JFrame {
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
 
-        JMenu windowMenu = new JMenu("Window");
-        JMenu showMenu = new JMenu("Show");
-
-        final JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
+        JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
         showFormItem.setSelected(true);
 
         showMenu.add(showFormItem);
@@ -87,7 +77,7 @@ public class MainFrame extends JFrame {
 
         showFormItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JCheckBoxMenuItem menuItem= (JCheckBoxMenuItem)e.getSource();
+                JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();
                 formPanel.setVisible(menuItem.isSelected());
             }
         });
@@ -98,7 +88,32 @@ public class MainFrame extends JFrame {
 
         importData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // x
+                if(fileChooser.showOpenDialog(MainFrame.this)==JFileChooser.APPROVE_OPTION){
+                    System.out.println(fileChooser.getSelectedFile());
+                }
+            }
+        });
+
+        exportData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(fileChooser.showSaveDialog(MainFrame.this)==JFileChooser.APPROVE_OPTION){
+                    System.out.println(fileChooser.getSelectedFile());
+                }
+            }
+        });
+
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                String username=JOptionPane.showInputDialog(MainFrame.this,
+//                        "Enter your username",
+//                        "Enter username", JOptionPane.OK_OPTION|JOptionPane.QUESTION_MESSAGE);
+                int action = JOptionPane.showConfirmDialog(MainFrame.this,
+                        "Do you really want to exit?",
+                        "Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
+                if (action == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
             }
         });
 

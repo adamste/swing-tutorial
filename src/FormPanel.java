@@ -45,6 +45,8 @@ public class FormPanel extends JPanel {
 
         //set up mnemonics
         okBtn.setMnemonic(KeyEvent.VK_O);
+
+
         nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
         nameLabel.setLabelFor(nameField);
 
