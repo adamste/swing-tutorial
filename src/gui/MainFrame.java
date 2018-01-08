@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
 
@@ -15,6 +16,7 @@ public class MainFrame extends JFrame {
     private Toolbar toolbar;
     private JFileChooser fileChooser;
     private Controller controller;
+    private TablePanel tablePanel;
 
     public MainFrame() {
         super("Hello World");
@@ -23,9 +25,10 @@ public class MainFrame extends JFrame {
         toolbar = new Toolbar();
         textPanel = new TextPanel();
         formPanel = new FormPanel();
+        tablePanel = new TablePanel();
+        controller = new Controller();
 
-        controller=new Controller();
-
+        tablePanel.setData(controller.getPeople());
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -48,16 +51,16 @@ public class MainFrame extends JFrame {
 //                String empCat = e.getEmpCat();
 //                textPanel.appendText(name + ": " + occupation + " : "
 //                        + ageCat + ": " + empCat + " " + e.getGenderCommand() + "\n");
-
                 controller.addPerson(e);
+                tablePanel.refresh();
             }
         });
 
         add(formPanel, BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);
-        add(textPanel, BorderLayout.CENTER);
+        add(tablePanel, BorderLayout.CENTER);
 
-        setMinimumSize(new Dimension(500,500));
+        setMinimumSize(new Dimension(500, 500));
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -96,11 +99,28 @@ public class MainFrame extends JFrame {
 
         fileMenu.setMnemonic(KeyEvent.VK_F);
         exitItem.setMnemonic(KeyEvent.VK_X);
-        exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        exitItem.setAccelerator(KeyStroke
+                .getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+
+        importData.setAccelerator(KeyStroke
+                .getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+
 
         importData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(fileChooser.showOpenDialog(MainFrame.this)==JFileChooser.APPROVE_OPTION){
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        controller.loadFromFile(fileChooser.getSelectedFile());
+                        tablePanel.refresh();
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        e1.printStackTrace();
+                    } catch (ClassNotFoundException e1) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        e1.printStackTrace();
+                    }
                     System.out.println(fileChooser.getSelectedFile());
                 }
             }
@@ -108,7 +128,14 @@ public class MainFrame extends JFrame {
 
         exportData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(fileChooser.showSaveDialog(MainFrame.this)==JFileChooser.APPROVE_OPTION){
+                if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        controller.saveToFile(fileChooser.getSelectedFile());
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Could not save data to file.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        e1.printStackTrace();
+                    }
                     System.out.println(fileChooser.getSelectedFile());
                 }
             }

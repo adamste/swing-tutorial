@@ -37,9 +37,7 @@ public class Toolbar extends JPanel implements ActionListener{
             if(stringListener!=null){
                 stringListener.textEmitted("Hello");
             }
-            //                textPanel.appendText("Hello\n");
         }else if (clicked==goodbyeButton){
-//            textPanel.appendText("Goodbye\n");
             if(stringListener!=null){
                 stringListener.textEmitted("Goodbye ");
             }

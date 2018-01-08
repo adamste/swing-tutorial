@@ -3,8 +3,17 @@ package controller;
 import gui.FormEvent;
 import model.*;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Controller {
     Database database = new Database();
+
+    public ArrayList<Person> getPeople(){
+        return database.getPeople();
+    }
 
     public void addPerson(FormEvent ev) {
         String name = ev.getName();
@@ -53,5 +62,13 @@ public class Controller {
         Person person = new Person(name, occupation, ageCat, employmentCategory, taxId, isUs, genderCat);
 
         database.addPerson(person);
+    }
+
+    public void saveToFile(File file) throws IOException {
+        database.saveToFile(file );
+    }
+
+    public void loadFromFile(File file) throws IOException, ClassNotFoundException {
+        database.loadFromFile(file);
     }
 }
