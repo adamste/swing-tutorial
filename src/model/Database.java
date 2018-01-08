@@ -3,6 +3,7 @@ package model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Database {
@@ -16,8 +17,8 @@ public class Database {
         people.add(person);
     }
 
-    public ArrayList<Person> getPeople() {
-        return people;
+    public List<Person> getPeople() {
+        return Collections.unmodifiableList(people);
     }
 
     public void saveToFile(File file) throws IOException {

@@ -6,12 +6,12 @@ import model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     Database database = new Database();
 
-    public ArrayList<Person> getPeople(){
+    public List<Person> getPeople(){
         return database.getPeople();
     }
 
