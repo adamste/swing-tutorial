@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser;
     private Controller controller;
     private TablePanel tablePanel;
+    private PrefsDialog prefsDialog;
 
     public MainFrame() {
         super("Hello World");
@@ -27,8 +28,16 @@ public class MainFrame extends JFrame {
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
         controller = new Controller();
+        prefsDialog=new PrefsDialog(this);
 
         tablePanel.setData(controller.getPeople());
+
+        tablePanel.setPersonTableListener(new PersonTableListener(){
+            public void rowDeleted(int row){
+                controller.removePerson(row);
+                System.out.println(row);
+            }
+        });
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -71,6 +80,7 @@ public class MainFrame extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenu windowMenu = new JMenu("Window");
         JMenu showMenu = new JMenu("Show");
+        JMenuItem prefsItem=new JMenuItem("Preferences...");
 
         JMenuItem exportData = new JMenuItem("Export data...");
         JMenuItem importData = new JMenuItem("Import data...");
@@ -86,9 +96,17 @@ public class MainFrame extends JFrame {
 
         showMenu.add(showFormItem);
         windowMenu.add(showMenu);
+        windowMenu.add(prefsItem);
 
         menuBar.add(fileMenu);
         menuBar.add(windowMenu);
+
+        prefsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prefsDialog.setVisible(true);
+            }
+        });
 
         showFormItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

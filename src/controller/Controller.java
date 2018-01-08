@@ -71,4 +71,8 @@ public class Controller {
     public void loadFromFile(File file) throws IOException, ClassNotFoundException {
         database.loadFromFile(file);
     }
+
+    public void removePerson(int index) {
+        database.removePerson(index);
+    }
 }

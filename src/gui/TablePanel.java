@@ -14,26 +14,27 @@ public class TablePanel extends JPanel {
     private JTable table;
     private PersonTableModel tableModel;
     private JPopupMenu popupMenu;
+    private PersonTableListener personTableListener;
 
     public TablePanel() {
         tableModel = new PersonTableModel();
         table = new JTable(tableModel);
-        popupMenu=new JPopupMenu();
+        popupMenu = new JPopupMenu();
 
-        JMenuItem removeItem=new JMenuItem("Delete row");
+        JMenuItem removeItem = new JMenuItem("Delete row");
         popupMenu.add(removeItem);
 
         table.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                int row=table.rowAtPoint(e.getPoint());
+                int row = table.rowAtPoint(e.getPoint());
 
 //                System.out.println(row);
 
-                table.getSelectionModel().setSelectionInterval(row,row);
+                table.getSelectionModel().setSelectionInterval(row, row);
 
-                if(e.getButton()==MouseEvent.BUTTON3){
+                if (e.getButton() == MouseEvent.BUTTON3) {
                     popupMenu.show(table, e.getX(), e.getY());
                 }
             }
@@ -42,8 +43,12 @@ public class TablePanel extends JPanel {
         removeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row=table.getSelectedRow();
-                System.out.println(row);
+                int row = table.getSelectedRow();
+
+                if(personTableListener!=null){
+                    personTableListener.rowDeleted(row);
+                    tableModel.fireTableRowsDeleted(row,row);
+                }
             }
         });
 
@@ -55,7 +60,11 @@ public class TablePanel extends JPanel {
         tableModel.setData(db);
     }
 
-    public void refresh(){
+    public void refresh() {
         tableModel.fireTableDataChanged();
+    }
+
+    public void setPersonTableListener(PersonTableListener personTableListener) {
+        this.personTableListener = personTableListener;
     }
 }
