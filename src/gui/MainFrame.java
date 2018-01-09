@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
 
@@ -18,6 +19,7 @@ public class MainFrame extends JFrame {
     private Controller controller;
     private TablePanel tablePanel;
     private PrefsDialog prefsDialog;
+    private Preferences prefs;
 
     public MainFrame() {
         super("Hello World");
@@ -29,6 +31,7 @@ public class MainFrame extends JFrame {
         tablePanel = new TablePanel();
         controller = new Controller();
         prefsDialog=new PrefsDialog(this);
+        prefs=Preferences.userRoot().node("db");
 
         tablePanel.setData(controller.getPeople());
 
@@ -38,6 +41,21 @@ public class MainFrame extends JFrame {
                 System.out.println(row);
             }
         });
+
+        prefsDialog.setPrefsListener(new PrefsListener() {
+            @Override
+            public void preferencesSet(String user, String password, int portNumber) {
+                prefs.put("user", user);
+                prefs.put("password", password);
+                prefs.putInt("port", portNumber);
+            }
+        });
+
+
+        String user=prefs.get("user","");
+        String password=prefs.get("password","");
+        Integer port=prefs.getInt("port",3306);
+        prefsDialog.setDefaults(user,password,port);
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -119,6 +137,9 @@ public class MainFrame extends JFrame {
         exitItem.setMnemonic(KeyEvent.VK_X);
         exitItem.setAccelerator(KeyStroke
                 .getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+
+        prefsItem.setAccelerator(KeyStroke
+                .getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 
         importData.setAccelerator(KeyStroke
                 .getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
