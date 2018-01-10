@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="05f1842c-81f0-40cd-9887-09d343362efe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui/FormPanel.java" afterPath="$PROJECT_DIR$/src/gui/FormPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui/MainFrame.java" afterPath="$PROJECT_DIR$/src/gui/MainFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui/Toolbar.java" afterPath="$PROJECT_DIR$/src/gui/Toolbar.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -46,11 +44,11 @@
       <file leaf-file-name="MainFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gui/MainFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="36" column="44" lean-forward="false" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+            <state relative-caret-position="543">
+              <caret line="44" column="8" lean-forward="false" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
               <folding>
-                <element signature="e#3707#3988#0" expanded="true" />
-                <element signature="e#3987#3988#0" expanded="true" />
+                <element signature="e#3900#4181#0" expanded="true" />
+                <element signature="e#4180#4181#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -915,11 +913,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gui/MainFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="36" column="44" lean-forward="false" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+        <state relative-caret-position="543">
+          <caret line="44" column="8" lean-forward="false" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
           <folding>
-            <element signature="e#3707#3988#0" expanded="true" />
-            <element signature="e#3987#3988#0" expanded="true" />
+            <element signature="e#3900#4181#0" expanded="true" />
+            <element signature="e#4180#4181#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -20,6 +20,8 @@ public class MainFrame extends JFrame {
     private PrefsDialog prefsDialog;
     private Preferences prefs;
     private JSplitPane splitPane;
+    private JTabbedPane tabbedPane;
+
 
     public MainFrame() {
         super("Hello World");
@@ -30,11 +32,16 @@ public class MainFrame extends JFrame {
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
         controller = new Controller();
-        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tablePanel);
+        tabbedPane=new JTabbedPane();
+        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabbedPane);
         prefsDialog=new PrefsDialog(this);
         prefs=Preferences.userRoot().node("db");
 
         splitPane.setOneTouchExpandable(true);
+
+        tabbedPane.addTab("Person Database", tablePanel);
+        tabbedPane.addTab("Messages", textPanel);
+
 
         tablePanel.setData(controller.getPeople());
 
