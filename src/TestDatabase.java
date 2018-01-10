@@ -20,6 +20,12 @@ public class TestDatabase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            db.load();
+        } catch (SQLException e) {
+            System.err.println("Cannot load from DB.");
+            e.printStackTrace();
+        }
 
         db.disconnect();
     }

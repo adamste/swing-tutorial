@@ -127,6 +127,36 @@ public class Database {
         oos.close();
     }
 
+    public void load() throws SQLException {
+        people.clear();
+
+        String sql="select id, name, age, employment_status, tax_id, us_citizen, gender, occupation " +
+                "from people order by name";
+        Statement selectStmt=con.createStatement();
+        ResultSet results=selectStmt.executeQuery(sql);
+
+        while (results.next()){
+            int id=results.getInt("id");
+            String name=results.getString("name");
+            String age=results.getString("age");
+            String employmentStatus=results.getString("employment_status");
+            String taxId=results.getString("tax_id");
+            boolean usCitizen=results.getBoolean("us_citizen");
+            String gender=results.getString("gender");
+            String occupation=results.getString("occupation");
+            System.out.println(results.getInt("id")+" "+results.getString("name")+" "+gender+" "+age+" "+usCitizen);
+
+            Person person=new Person(id,name, occupation, AgeCategory.valueOf(age),
+                    EmploymentCategory.valueOf(employmentStatus), taxId, usCitizen, Gender.valueOf(gender));
+            people.add(person);
+            System.out.println(person);
+
+        }
+
+        results.close();
+        selectStmt.close();
+    }
+
     public void loadFromFile(File file) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);

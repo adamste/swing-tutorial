@@ -15,8 +15,8 @@ public class Person implements Serializable{
     private Gender genderCommand;
 
     public Person(String name, String occupation, AgeCategory ageCategory,
-                  EmploymentCategory employmentCategory, String taxId,
-                  Boolean usCitizen, Gender gender){
+                    EmploymentCategory employmentCategory, String taxId,
+                    Boolean usCitizen, Gender gender){
         this.name=name;
         this.occupation=occupation;
         this.ageCategory=ageCategory;
@@ -25,6 +25,13 @@ public class Person implements Serializable{
         this.usCitizen=usCitizen;
         this.genderCommand=gender;
         this.id=count++;
+    }
+
+    public Person(int id, String name, String occupation, AgeCategory ageCategory,
+                  EmploymentCategory employmentCategory, String taxId,
+                  Boolean usCitizen, Gender gender){
+        this(name,occupation,ageCategory, employmentCategory,taxId,usCitizen,gender);
+        this.id=id;
     }
 
     public int getId() {
@@ -89,5 +96,10 @@ public class Person implements Serializable{
 
     public void setGenderCommand(Gender genderCommand) {
         this.genderCommand = genderCommand;
+    }
+
+    @Override
+    public String toString() {
+        return "This person is: "+getName()+" and is "+getGenderCommand()+". Works as "+getOccupation();
     }
 }

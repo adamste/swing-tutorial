@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
@@ -62,10 +63,32 @@ public class MainFrame extends JFrame {
 
         setJMenuBar(createMenuBar());
 
-        toolbar.setStringListener(new StringListener() {
+        toolbar.setToolbarListener(new ToolbarListener() {
             @Override
-            public void textEmitted(String text) {
-                textPanel.appendText(text);
+            public void saveEventOccured() {
+                connect();
+                try {
+                    controller.save();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Cannot save in database",
+                            "Database Connection Problem",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            @Override
+            public void refreshEventOccured() {
+                connect();
+                try {
+                    controller.load();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Unable to load from database",
+                            "Database Connection Problem",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                tablePanel.refresh();
             }
         });
 
@@ -91,6 +114,17 @@ public class MainFrame extends JFrame {
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void connect() {
+        try {
+            controller.connect();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    "Cannot connect do database",
+                    "Database Connection Problem",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private JMenuBar createMenuBar() {
