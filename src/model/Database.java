@@ -1,10 +1,8 @@
 package model;
 
+import javax.xml.transform.Result;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class Database {
@@ -16,6 +14,7 @@ public class Database {
 
     public void connect() throws Exception {
         if(con!=null) return;
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -36,6 +35,58 @@ public class Database {
             }
         }
     }
+
+    public void save() throws SQLException {
+        String checkSql="Select count(*) as count from people where id=?";
+        PreparedStatement checkStmt = con.prepareStatement(checkSql);
+
+        String insertSql="insert into people (id, name, age, employment_status, tax_id, " +
+                "us_citizen, gender, occupation) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStatement=con.prepareStatement(insertSql);
+        for (Person person:people){
+            int id=person.getId();
+
+            String name=person.getName();
+            String occupation=person.getOccupation();
+            AgeCategory ageCategory=person.getAgeCategory();
+            EmploymentCategory employmentCategory=person.getEmpCat();
+            String tax=person.getTaxId();
+            boolean isUS=person.isUsCitizen();
+            Gender gender=person.getGenderCommand();
+
+            checkStmt.setInt(1,id);
+
+            ResultSet checkResult=checkStmt.executeQuery();
+            checkResult.next();
+
+            int count=checkResult.getInt(1);
+
+            if(count==0){
+                System.out.println("Inserting person with id: "+id);
+
+                int col=1;
+                insertStatement.setInt(col++,id);
+                insertStatement.setString(col++,name);
+                insertStatement.setString(col++,ageCategory.name());
+
+                insertStatement.setString(col++,employmentCategory.name());
+                insertStatement.setString(col++,tax);
+                insertStatement.setBoolean(col++,isUS);
+                insertStatement.setString(col++,gender.name());
+
+                insertStatement.setString(col++,occupation);
+
+                insertStatement.executeUpdate();
+            }else {
+                System.out.println("Update person with id: "+id);
+            }
+
+            System.out.println("Count for person with ID "+id+" is "+count);
+        }
+        insertStatement.close();
+        checkStmt.close();
+    }
+
     public void addPerson(Person person) {
         people.add(person);
     }
