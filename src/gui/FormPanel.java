@@ -28,6 +28,7 @@ public class FormPanel extends JPanel {
         Dimension dimension = getPreferredSize();
         dimension.width = 250;
         setPreferredSize(dimension);
+        setMinimumSize(dimension);
 
         nameLabel = new JLabel("Name: ");
         occupationLabel = new JLabel("Ocupation: ");

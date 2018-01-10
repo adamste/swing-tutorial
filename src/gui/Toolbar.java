@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-public class Toolbar extends JPanel implements ActionListener{
+public class Toolbar extends JToolBar implements ActionListener{
 
     private JButton saveButton;
     private JButton refreshButton;
@@ -14,19 +14,23 @@ public class Toolbar extends JPanel implements ActionListener{
     private ToolbarListener toolbarListener;
 
     public Toolbar(){
+        ///get rid of the border if you want to the toolbar draggable
         setBorder(BorderFactory.createEtchedBorder());
-        saveButton =new JButton("Save");
+        saveButton =new JButton();
         saveButton.setIcon(createIcon("/images/Save16.gif"));
+        saveButton.setToolTipText("Save");
 
-        refreshButton =new JButton("Refresh");
+        refreshButton =new JButton();
         refreshButton.setIcon(createIcon("/images/Refresh16.gif"));
+        refreshButton.setToolTipText("Refresh");
 
         saveButton.addActionListener(this);
         refreshButton.addActionListener(this);
 
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        //setLayout(new FlowLayout(FlowLayout.LEFT));
 
         add(saveButton);
+//        addSeparator();
         add(refreshButton);
     }
 
