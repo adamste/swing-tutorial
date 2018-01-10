@@ -12,7 +12,7 @@ public class TestDatabase {
             e.printStackTrace();
         }
 
-        db.addPerson(new Person("Adam", "Java Programmer", AgeCategory.child,  EmploymentCategory.selfemployed, null, false, Gender.male));
+        db.addPerson(new Person("Adam", "Java Programmer", AgeCategory.child,  EmploymentCategory.selfemployed, "123", true, Gender.male));
         db.addPerson(new Person("Bartek", "PHP Programmer", AgeCategory.senior,  EmploymentCategory.employed, null, false, Gender.male));
         db.addPerson(new Person("Lukas", "Logistic specialist", AgeCategory.senior,  EmploymentCategory.employed, null, false, Gender.male));
         try {

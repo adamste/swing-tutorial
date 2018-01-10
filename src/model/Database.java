@@ -42,6 +42,11 @@ public class Database {
 
         String insertSql="insert into people (id, name, age, employment_status, tax_id, " +
                 "us_citizen, gender, occupation) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        String updateSql="update people set name=?, age=?, employment_status=?, tax_id=?, " +
+                "us_citizen=?, gender=?, occupation=? where id=?";
+        PreparedStatement updateStmt=con.prepareStatement(updateSql);
+
         PreparedStatement insertStatement=con.prepareStatement(insertSql);
         for (Person person:people){
             int id=person.getId();
@@ -79,12 +84,28 @@ public class Database {
                 insertStatement.executeUpdate();
             }else {
                 System.out.println("Update person with id: "+id);
+
+                int col=1;
+                updateStmt.setString(col++,name);
+                updateStmt.setString(col++,ageCategory.name());
+
+                updateStmt.setString(col++,employmentCategory.name());
+                updateStmt.setString(col++,tax);
+                updateStmt.setBoolean(col++,isUS);
+                updateStmt.setString(col++,gender.name());
+
+                updateStmt.setString(col++,occupation);
+
+                updateStmt.setInt(col++,id);
+
+                updateStmt.executeUpdate();
             }
 
             System.out.println("Count for person with ID "+id+" is "+count);
         }
         insertStatement.close();
         checkStmt.close();
+        updateStmt.close();
     }
 
     public void addPerson(Person person) {
