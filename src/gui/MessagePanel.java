@@ -1,6 +1,8 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -51,20 +53,33 @@ public class MessagePanel extends JPanel {
         serverTree.setEditable(true);
 
         serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        serverTree.addTreeSelectionListener(new TreeSelectionListener() {
+
+        treeCellEditor.addCellEditorListener(new CellEditorListener() {
             @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree.getLastSelectedPathComponent();
-                Object userObject = node.getUserObject();
+            public void editingCanceled(ChangeEvent e) {
+            }
 
-                if (userObject instanceof ServerInfo) {
-                    int id = ((ServerInfo) userObject).getId();
-                    System.out.println("Got user object with id: " + id);
-                }
-
-                System.out.println(userObject);
+            @Override
+            public void editingStopped(ChangeEvent e) {
+                ServerInfo info=(ServerInfo)treeCellEditor.getCellEditorValue();
+                System.out.println(info+" : "+info.getId()+"; "+info.isChecked());
             }
         });
+
+//        serverTree.addTreeSelectionListener(new TreeSelectionListener() {
+//            @Override
+//            public void valueChanged(TreeSelectionEvent e) {
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree.getLastSelectedPathComponent();
+//                Object userObject = node.getUserObject();
+//
+//                if (userObject instanceof ServerInfo) {
+//                    int id = ((ServerInfo) userObject).getId();
+//                    System.out.println("Got user object with id: " + id);
+//                }
+//
+//                System.out.println(userObject);
+//            }
+//        });
         setLayout(new BorderLayout());
 
         add(new JScrollPane(serverTree), BorderLayout.CENTER);
