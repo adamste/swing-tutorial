@@ -17,11 +17,11 @@ public class Toolbar extends JToolBar implements ActionListener{
         ///get rid of the border if you want to the toolbar draggable
         setBorder(BorderFactory.createEtchedBorder());
         saveButton =new JButton();
-        saveButton.setIcon(createIcon("/images/Save16.gif"));
+        saveButton.setIcon(Utils.createIcon("/images/Save16.gif"));
         saveButton.setToolTipText("Save");
 
         refreshButton =new JButton();
-        refreshButton.setIcon(createIcon("/images/Refresh16.gif"));
+        refreshButton.setIcon(Utils.createIcon("/images/Refresh16.gif"));
         refreshButton.setToolTipText("Refresh");
 
         saveButton.addActionListener(this);
@@ -34,15 +34,15 @@ public class Toolbar extends JToolBar implements ActionListener{
         add(refreshButton);
     }
 
-    private ImageIcon createIcon(String path){
-        URL url=getClass().getResource(path);
-        if (url==null){
-            System.err.println("Unable to load image: "+path);
-        }
-
-        ImageIcon imageIcon=new ImageIcon(url, "Nice icon man!");
-        return imageIcon;
-    }
+//    private ImageIcon createIcon(String path){
+//        URL url=getClass().getResource(path);
+//        if (url==null){
+//            System.err.println("Unable to load image: "+path);
+//        }
+//
+//        ImageIcon imageIcon=new ImageIcon(url, "Nice icon man!");
+//        return imageIcon;
+//    }
 
     public void setToolbarListener(ToolbarListener toolbarListener) {
         this.toolbarListener = toolbarListener;
