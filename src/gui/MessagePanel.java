@@ -6,6 +6,8 @@ import model.Message;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -44,7 +46,7 @@ class ServerInfo {
     }
 }
 
-public class MessagePanel extends JPanel implements ProgressDialogListener{
+public class MessagePanel extends JPanel implements ProgressDialogListener {
     private JTree serverTree;
     private ServerTreeCellRendered treeCellRenderer;
     private ServerTreeCellEditor treeCellEditor;
@@ -53,9 +55,15 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
     private Set<Integer> selectedServers;
     private SwingWorker<List<Message>, Integer> worker;
 
+    private TextPanel textPanel;
+    private JList messageList;
+    private JSplitPane upperPane;
+    private JSplitPane lowerPane;
+    private DefaultListModel messageListModel;
+
     public MessagePanel(JFrame parent) {
 //        treeCellRenderer = new ServerTree();
-
+        messageListModel=new DefaultListModel();
         progressDialog = new ProgressDialog(parent, "Messages Downloading...");
         messageServer = new MessageServer();
 
@@ -75,6 +83,9 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
 
         serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+        messageServer.setSelectedServers(selectedServers);
+
+
         treeCellEditor.addCellEditorListener(new CellEditorListener() {
             @Override
             public void editingCanceled(ChangeEvent e) {
@@ -84,7 +95,6 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
             @Override
             public void editingStopped(ChangeEvent e) {
                 ServerInfo info = (ServerInfo) treeCellEditor.getCellEditorValue();
-                System.out.println(info + " : " + info.getId() + "; " + info.isChecked());
 
                 int serverId = info.getId();
 
@@ -94,21 +104,54 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
                     selectedServers.remove(serverId);
                 }
 
-                messageServer.setSelectedServers(selectedServers);
                 retrieveMessages();
-
-
-
             }
         });
         setLayout(new BorderLayout());
-        add(new JScrollPane(serverTree), BorderLayout.CENTER);
+
+        textPanel = new TextPanel();
+        messageList = new JList(messageListModel);
+
+        messageList.setCellRenderer(new MessageListRenderer());
+
+        messageList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                Message message=(Message) messageList.getSelectedValue();
+
+                textPanel.setText(message.getContents());
+            }
+        });
+
+        messageList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                Message message= (Message) messageList.getSelectedValue();
+                textPanel.setText(message.getContents());
+            }
+        });
+
+        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(messageList), textPanel);
+        upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
+
+        textPanel.setMinimumSize(new Dimension(10, 100));
+        messageList.setMinimumSize(new Dimension(10, 100));
+
+        upperPane.setResizeWeight(0.5);
+        lowerPane.setResizeWeight(0.5);
+
+        add(upperPane, BorderLayout.CENTER);
+//        add(, BorderLayout.CENTER);
+    }
+
+    public void refresh() {
+        retrieveMessages();
     }
 
     private void retrieveMessages() {
         progressDialog.setMaximum(messageServer.getMessageCount());
 
-                progressDialog.setVisible(true);
+        progressDialog.setVisible(true);
 
         worker = new SwingWorker<List<Message>, Integer>() {
             @Override
@@ -118,8 +161,8 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
                 int count = 0;
 
                 for (Message message : messageServer) {
-                    if(isCancelled()) break;
-                    System.out.println(message.getTitle());
+                    if (isCancelled()) break;
+                    System.out.println(message);
                     retrievedMessages.add(message);
                     count++;
                     publish(count);
@@ -129,7 +172,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
 
             @Override
             protected void process(List<Integer> counts) {
-                int retrieved=counts.get(counts.size()-1);
+                int retrieved = counts.get(counts.size() - 1);
 
                 progressDialog.setValue(retrieved);
             }
@@ -138,10 +181,18 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
             protected void done() {
                 progressDialog.setVisible(false);
 
-                if(isCancelled())return;
+                if (isCancelled()) return;
 
                 try {
                     List<Message> retrMessages = get();
+
+                    messageListModel.removeAllElements();
+                    for(Message message: retrMessages){
+                        messageListModel.addElement(message);
+                    }
+
+                    messageList.setSelectedIndex(0);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -177,7 +228,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener{
 
     @Override
     public void progressDialogCancelled() {
-        if (worker!=null){
+        if (worker != null) {
             worker.cancel(true);
         }
     }

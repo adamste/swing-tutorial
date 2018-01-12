@@ -3,6 +3,8 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -11,7 +13,6 @@ import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
 
-    private TextPanel textPanel;
     private static FormPanel formPanel;
     private Toolbar toolbar;
     private JFileChooser fileChooser;
@@ -28,7 +29,6 @@ public class MainFrame extends JFrame {
 
         setLayout(new BorderLayout());
         toolbar = new Toolbar();
-        textPanel = new TextPanel();
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
         controller = new Controller();
@@ -50,6 +50,16 @@ public class MainFrame extends JFrame {
             public void rowDeleted(int row){
                 controller.removePerson(row);
                 System.out.println(row);
+            }
+        });
+
+        tabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                int tabIndex=tabbedPane.getSelectedIndex();
+
+                if(tabIndex==1){
+                    messagePanel.refresh();
+                }
             }
         });
 
