@@ -102,16 +102,9 @@ public class MessagePanel extends JPanel {
     }
 
     private void retrieveMessages() {
-        System.out.println("Messages waiting: " + messageServer.getMessageCount());
+        progressDialog.setMaximum(messageServer.getMessageCount());
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Showing modal dialog");
                 progressDialog.setVisible(true);
-                System.out.println("Finished showing modal dialog");
-            }
-        });
 
         SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
             @Override
@@ -132,14 +125,14 @@ public class MessagePanel extends JPanel {
             @Override
             protected void process(List<Integer> counts) {
                 int retrieved=counts.get(counts.size()-1);
-                System.out.println("Got "+retrieved+" messages.");
+
+                progressDialog.setValue(retrieved);
             }
 
             @Override
             protected void done() {
                 try {
                     List<Message> retrMessages = get();
-                    System.out.println("Retrieved "+retrMessages.size()+" messages.");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
