@@ -52,10 +52,10 @@ public class MessagePanel extends JPanel {
     private ProgressDialog progressDialog;
     private Set<Integer> selectedServers;
 
-    public MessagePanel() {
+    public MessagePanel(JFrame parent) {
 //        treeCellRenderer = new ServerTree();
 
-        progressDialog = new ProgressDialog((Window)getParent());
+        progressDialog = new ProgressDialog(parent);
         messageServer = new MessageServer();
         selectedServers = new TreeSet<Integer>();
         selectedServers.add(0);
