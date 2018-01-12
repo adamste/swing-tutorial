@@ -483,7 +483,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelStmt.execute("SELECT SLEEP(30)");
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -528,7 +528,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelStmt.execute("SELECT SLEEP(30)");
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -555,7 +555,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelPstmt.execute();
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -599,7 +599,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelPstmt.execute();
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -626,7 +626,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelClientPstmt.execute();
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -670,7 +670,7 @@ public class StatementsTest extends BaseTestCase {
                 try {
                     cancelClientPstmt.execute();
                 } catch (SQLException sqlEx) {
-                    assertTrue("Probably wasn't actually cancelled", System.currentTimeMillis() - begin < 30000);
+                    assertTrue("Probably wasn't actually progressDialogCancelled", System.currentTimeMillis() - begin < 30000);
                 }
 
                 for (int i = 0; i < 1000; i++) {
@@ -694,7 +694,7 @@ public class StatementsTest extends BaseTestCase {
 
                 try {
                     forceStmt.execute("SELECT SLEEP(30)");
-                    fail("Statement should have been cancelled");
+                    fail("Statement should have been progressDialogCancelled");
                 } catch (MySQLTimeoutException timeout) {
                     // expected
                 }

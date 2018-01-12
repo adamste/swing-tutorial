@@ -5446,7 +5446,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             this.pstmt.executeBatch();
         } catch (BatchUpdateException batchEx) {
-            assertTrue(batchEx.getMessage().startsWith("Statement cancelled"));
+            assertTrue(batchEx.getMessage().startsWith("Statement progressDialogCancelled"));
         } finally {
             this.conn.setAutoCommit(true);
             lockerConn.commit();
@@ -8213,7 +8213,7 @@ public class StatementRegressionTest extends BaseTestCase {
         // Test using a standard connection.
         final Statement testStmt = this.conn.createStatement();
         testStmt.setQueryTimeout(1);
-        assertThrows(SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+        assertThrows(SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
             public Void call() throws Exception {
                 testStmt.executeQuery("SELECT SLEEP(3)");
                 return null;
@@ -8234,7 +8234,7 @@ public class StatementRegressionTest extends BaseTestCase {
             testConn = getUnreliableFailoverConnection(new String[] { "host1", "host2" }, null);
             final Statement testStmtFO = testConn.createStatement();
             testStmtFO.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testStmtFO.executeQuery("SELECT SLEEP(3)");
                     return null;
@@ -8242,7 +8242,7 @@ public class StatementRegressionTest extends BaseTestCase {
             });
             final PreparedStatement testPstmtFO = testConn.prepareStatement("SELECT SLEEP(3)");
             testPstmtFO.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testPstmtFO.executeQuery();
                     return null;
@@ -8254,7 +8254,7 @@ public class StatementRegressionTest extends BaseTestCase {
             testConn = getUnreliableLoadBalancedConnection(new String[] { "host1", "host2" }, null);
             final Statement testStmtLB = testConn.createStatement();
             testStmtLB.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testStmtLB.executeQuery("SELECT SLEEP(3)");
                     return null;
@@ -8262,7 +8262,7 @@ public class StatementRegressionTest extends BaseTestCase {
             });
             final PreparedStatement testPstmtLB = testConn.prepareStatement("SELECT SLEEP(3)");
             testPstmtLB.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testPstmtLB.executeQuery();
                     return null;
@@ -8274,7 +8274,7 @@ public class StatementRegressionTest extends BaseTestCase {
             testConn = getUnreliableReplicationConnection(new String[] { "host1", "host2" }, null);
             final Statement testStmtR = testConn.createStatement();
             testStmtR.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testStmtR.executeQuery("SELECT SLEEP(3)");
                     return null;
@@ -8282,7 +8282,7 @@ public class StatementRegressionTest extends BaseTestCase {
             });
             final PreparedStatement testPstmtR = testConn.prepareStatement("SELECT SLEEP(3)");
             testPstmtR.setQueryTimeout(1);
-            assertThrows(testCase, SQLException.class, "Statement cancelled due to timeout or client request", new Callable<Void>() {
+            assertThrows(testCase, SQLException.class, "Statement progressDialogCancelled due to timeout or client request", new Callable<Void>() {
                 public Void call() throws Exception {
                     testPstmtR.executeQuery();
                     return null;

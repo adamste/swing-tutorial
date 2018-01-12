@@ -44,19 +44,23 @@ class ServerInfo {
     }
 }
 
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements ProgressDialogListener{
     private JTree serverTree;
     private ServerTreeCellRendered treeCellRenderer;
     private ServerTreeCellEditor treeCellEditor;
     private MessageServer messageServer;
     private ProgressDialog progressDialog;
     private Set<Integer> selectedServers;
+    private SwingWorker<List<Message>, Integer> worker;
 
     public MessagePanel(JFrame parent) {
 //        treeCellRenderer = new ServerTree();
 
-        progressDialog = new ProgressDialog(parent);
+        progressDialog = new ProgressDialog(parent, "Messages Downloading...");
         messageServer = new MessageServer();
+
+        progressDialog.setListener(this);
+
         selectedServers = new TreeSet<Integer>();
         selectedServers.add(0);
         selectedServers.add(1);
@@ -106,7 +110,7 @@ public class MessagePanel extends JPanel {
 
                 progressDialog.setVisible(true);
 
-        SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
+        worker = new SwingWorker<List<Message>, Integer>() {
             @Override
             protected List<Message> doInBackground() throws Exception {
                 List<Message> retrievedMessages = new ArrayList<Message>();
@@ -114,6 +118,7 @@ public class MessagePanel extends JPanel {
                 int count = 0;
 
                 for (Message message : messageServer) {
+                    if(isCancelled()) break;
                     System.out.println(message.getTitle());
                     retrievedMessages.add(message);
                     count++;
@@ -131,6 +136,10 @@ public class MessagePanel extends JPanel {
 
             @Override
             protected void done() {
+                progressDialog.setVisible(false);
+
+                if(isCancelled())return;
+
                 try {
                     List<Message> retrMessages = get();
                 } catch (InterruptedException e) {
@@ -138,7 +147,6 @@ public class MessagePanel extends JPanel {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                progressDialog.setVisible(false);
             }
         };
 
@@ -165,5 +173,12 @@ public class MessagePanel extends JPanel {
         top.add(branch2);
 
         return top;
+    }
+
+    @Override
+    public void progressDialogCancelled() {
+        if (worker!=null){
+            worker.cancel(true);
+        }
     }
 }
