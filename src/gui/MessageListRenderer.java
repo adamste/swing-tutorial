@@ -22,8 +22,10 @@ public class MessageListRenderer implements ListCellRenderer {
         panel = new JPanel();
         label = new JLabel();
 
-        selectedColor=Color.CYAN;
-        normalColor=Color.WHITE;
+        label.setFont(Utils.createFont("/fonts/CrimewaveBB.ttf").deriveFont(Font.BOLD, 21));
+
+        selectedColor = Color.CYAN;
+        normalColor = Color.WHITE;
 
         label.setIcon(Utils.createIcon("/images/Information24.gif"));
 
@@ -37,11 +39,11 @@ public class MessageListRenderer implements ListCellRenderer {
                                                   int index,
                                                   boolean isSelected,
                                                   boolean cellHasFocus) {
-        Message message=(Message) value;
+        Message message = (Message) value;
 
         label.setText(message.getTitle());
 
-        panel.setBackground(cellHasFocus ? selectedColor: normalColor);
+        panel.setBackground(cellHasFocus ? selectedColor : normalColor);
 
         return panel;
     }
