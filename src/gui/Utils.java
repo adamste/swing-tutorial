@@ -7,45 +7,45 @@ import java.net.URL;
 
 public class Utils {
 
-    public static String getFileExtension(String name){
-        int pointIndex=name.lastIndexOf(".");
+    public static String getFileExtension(String name) {
+        int pointIndex = name.lastIndexOf(".");
 
-        if(pointIndex == -1){
+        if (pointIndex == -1) {
             return null;
         }
 
-        if (pointIndex==name.length()-1){
+        if (pointIndex == name.length() - 1) {
             return null;
         }
 
-        return name.substring(pointIndex+1,name.length());
+        return name.substring(pointIndex + 1, name.length());
     }
 
-    public static ImageIcon createIcon(String path){
-        URL url=System.class.getResource(path);
+    public static ImageIcon createIcon(String path) {
+        URL url = System.class.getResource(path);
 
-        if(url==null){
-            System.err.println("Unable to load image: "+path);
+        if (url == null) {
+            System.err.println("Unable to load image: " + path);
         }
 
-        ImageIcon icon=new ImageIcon(url);
+        ImageIcon icon = new ImageIcon(url);
         return icon;
     }
 
-    public static Font createFont(String path){
-        URL url=System.class.getResource(path);
+    public static Font createFont(String path) {
+        URL url = System.class.getResource(path);
 
-        if(url==null){
-            System.err.println("Unable to load font: "+path);
+        if (url == null) {
+            System.err.println("Unable to load font: " + path);
         }
 
-        Font font= null;
+        Font font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, url.openStream());
         } catch (FontFormatException e) {
-            System.err.println("Bad format in font file: "+path);
+            System.err.println("Bad format in font file: " + path);
         } catch (IOException e) {
-            System.out.println("Unable to read font file: "+path);
+            System.out.println("Unable to read font file: " + path);
         }
         return font;
     }

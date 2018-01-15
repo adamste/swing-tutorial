@@ -86,19 +86,12 @@ public class MainFrame extends JFrame {
         toolbar.setToolbarListener(new ToolbarListener() {
             @Override
             public void saveEventOccured() {
-                connect();
-                try {
-                    controller.save();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(MainFrame.this,
-                            "Cannot save in database",
-                            "Database Connection Problem",
-                            JOptionPane.ERROR_MESSAGE);
-                }
+                refresh();
             }
 
             @Override
             public void refreshEventOccured() {
+
                 connect();
                 try {
                     controller.load();
@@ -268,5 +261,20 @@ public class MainFrame extends JFrame {
         });
 
         return menuBar;
+    }
+
+    private void refresh(){
+        connect();
+        try {
+            controller.save();
+            controller.load();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    "Cannot save in database",
+                    "Database Connection Problem",
+                    JOptionPane.ERROR_MESSAGE);
+            tablePanel.refresh();
+            return;
+        }
     }
 }

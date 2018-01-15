@@ -7,17 +7,44 @@ import java.util.List;
 
 public class PersonTableModel extends AbstractTableModel {
     private List<Person> db;
-    private String[] colNames={"Id", "Name", "Occupation", "Age Category", "Employment Category", "US Citizen","Tax ID"};
-    public PersonTableModel(){
+    private String[] colNames = {"Id", "Name", "Occupation", "Age Category", "Employment Category", "US Citizen", "Tax ID"};
+
+    public PersonTableModel() {
     }
 
     @Override
     public String getColumnName(int column) {
-        return  colNames[column];
+        return colNames[column];
+    }
+
+    @Override
+    public void setValueAt(Object value, int row, int column) {
+        if(db==null) return;
+
+        Person person=db.get(row);
+
+        switch (column) {
+            case 1:
+                person.setName((String )value);
+                break;
+            default:
+                return;
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+
+        switch (column) {
+            case 1:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void setData(List<Person> db) {
-    this.db=db;
+        this.db = db;
     }
 
     @Override
@@ -33,8 +60,8 @@ public class PersonTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
 
-        Person person=db.get(row);
-        switch (col){
+        Person person = db.get(row);
+        switch (col) {
             case 0:
                 return person.getId();
             case 1:
